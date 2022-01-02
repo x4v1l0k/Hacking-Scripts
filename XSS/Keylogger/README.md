@@ -56,3 +56,9 @@ var _0x46009d=_0x1166;(function(_0x5240e0,_0xa2a147){var _0x2b658c=_0x1166,_0x47
     }
 ?>
 ```
+
+## Log Output Example
+
+```
+2022/01/02 07:50:48 | <input type="text" id="inputTestId" name="inputTestName" class="inputTestClass"> -> This is a log example
+```
