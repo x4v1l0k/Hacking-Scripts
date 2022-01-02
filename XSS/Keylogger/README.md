@@ -1,4 +1,4 @@
-Simple Keylogger written in JavaScript to be used in XSS attacks
+JavaScript Keylogger to be used in XSS attacks
 ===
 
 The script creates an event to detect the insertion of text in each text field of type "input" and sends the written content to the specified server that will have the second script called "receiver.php" running.
