@@ -7,11 +7,16 @@ logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 try:
 	import ipaddress
 except ImportError:
-	exit(colored("You need ipaddress!\n", "red")+colored("You can instal it with", "cyan")+colored(" pip3 install ipaddress", "yellow", attrs=['bold'])+colored(" or dowload it from ", "cyan")+colored("https://github.com/phihag/ipaddress", "yellow"))
+	exit(colored("You need ipaddress!\n", "red")+colored("You can install it with", "cyan")+colored(" pip3 install ipaddress", "yellow", attrs=['bold'])+colored(" or dowload it from ", "cyan")+colored("https://github.com/phihag/ipaddress", "yellow"))
 try:
 	import scapy.all as scapy
 except ImportError:
-	exit(colored("You need scapy!\n", "red")+colored("You can instal it with", "cyan")+colored(" pip3 install scapy", "yellow", attrs=['bold'])+colored(" or dowload it from ", "cyan")+colored("https://github.com/secdev/scapy", "yellow"))
+	exit(colored("You need scapy!\n", "red")+colored("You can install it with", "cyan")+colored(" pip3 install scapy", "yellow", attrs=['bold'])+colored(" or dowload it from ", "cyan")+colored("https://github.com/secdev/scapy", "yellow"))
+
+hostsStatus = {
+	"alive" : 0,
+	"dead" : 0
+}
 
 def getArguments():
 	parser = argparse.ArgumentParser()
@@ -56,6 +61,7 @@ def icmpPing(options, ip, ipStatus, verbose):
 	for a in ans: ipStatus.append(a[1].src)
 
 def checkHost(options, ip):
+	global hostsStatus
 	with Manager() as manager:
 		ipStatus = manager.list()
 		ip = str(ip)
@@ -72,7 +78,12 @@ def checkHost(options, ip):
 		pTcpAckPing.join()
 		pArpPing.join()
 		pIcmpPing.join()
-		return True if len(ipStatus) > 0 else False
+		if len(ipStatus) > 0:
+			hostsStatus["alive"] += 1
+			return True
+		else:
+			hostsStatus["dead"] += 1
+			return False
 
 def printResult(options, ip, status):
 	if options.alive and status != "alive":
@@ -110,3 +121,5 @@ if __name__ == '__main__':
 
 	if outfile:
 		outfile.close()
+	
+	print("\n"+colored("Hosts status: ", "yellow")+colored("{} alive".format(hostsStatus["alive"]), "green", attrs=['bold'])+colored(" and ", "yellow")+colored("{} dead".format(hostsStatus["dead"]), "red", attrs=['bold']))
