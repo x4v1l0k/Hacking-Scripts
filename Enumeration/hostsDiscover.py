@@ -1,4 +1,4 @@
-import argparse, os, logging
+import argparse, os, logging, netifaces
 from colorama import init
 from termcolor import colored
 from multiprocessing import Process, Manager
@@ -16,12 +16,15 @@ except ImportError:
 def getArguments():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-i", "--ip", dest="ip", help="target ip address or a ip range like x.x.x.x/x")
+	parser.add_argument("-d", "--device", dest="device", help="Network interface device")
 	parser.add_argument("-t", "--timeout", dest="default_timeout", help="default timeout for the host recognition.", type=int)
 	parser.add_argument("-a", "--alive", action="store_true", help="show only alive hosts")
 	parser.add_argument("-o", "--output", dest="output", help="save to log file")
 	parser.add_argument("-oc", "--output-clean", dest="output_clean", help="save to log file only ip addresses")
 	parser.add_argument("-v", "--verbose", action="store_true", help="mainly for debugging")
 	args = parser.parse_args()
+	if not args.device:
+		args.device = netifaces.gateways()['default'][netifaces.AF_INET][1]
 	if not args.ip:
 		parser.error(colored("[-] Please specify a ip address or a network range with format x.x.x.x/x", "red"))
 	if not args.default_timeout:
@@ -37,20 +40,28 @@ def printBanner():
 _________________________________________________________________\n""")
 
 def tcpSynPing(options, ip, ipStatus, verbose):
-	ans, unans = scapy.sr(scapy.IP(dst=ip) / scapy.TCP(dport=80, flags="S"), timeout=options.default_timeout, verbose=verbose)
+	ans, unans = scapy.sr(scapy.IP(dst=ip) / scapy.TCP(dport=80, flags="S"), iface=options.device, timeout=options.default_timeout, verbose=verbose)
+	print(ans)
 	for a in ans: ipStatus.append(a[1].src)
+	print(ipStatus)
 
 def tcpAckPing(options, ip, ipStatus, verbose):
-	ans, unans = scapy.sr(scapy.IP(dst=ip) / scapy.TCP(dport=80, flags="A"), timeout=options.default_timeout, verbose=verbose)
+	ans, unans = scapy.sr(scapy.IP(dst=ip) / scapy.TCP(dport=80, flags="A"), iface=options.device, timeout=options.default_timeout, verbose=verbose)
+	print(ans)
 	for a in ans: ipStatus.append(a[1].src)
+	print(ipStatus)
 
 def arpPing(options, ip, ipStatus, verbose):
-	ans, unans = scapy.srp(scapy.Ether(dst="ff:ff:ff:ff:ff:ff") / scapy.ARP(pdst=ip), timeout=options.default_timeout, verbose=verbose)
+	ans, unans = scapy.srp(scapy.Ether(dst="ff:ff:ff:ff:ff:ff") / scapy.ARP(pdst=ip), iface=options.device, timeout=options.default_timeout, verbose=verbose)
+	print(ans)
 	for a in ans: ipStatus.append(a[1].src)
+	print(ipStatus)
 
 def icmpPing(options, ip, ipStatus, verbose):
-	ans, unans = scapy.sr(scapy.IP(dst=ip) / scapy.ICMP(), timeout=options.default_timeout, verbose=verbose)
+	ans, unans = scapy.sr(scapy.IP(dst=ip) / scapy.ICMP(), iface=options.device, timeout=options.default_timeout, verbose=verbose)
+	print(ans)
 	for a in ans: ipStatus.append(a[1].src)
+	print(ipStatus)
 
 def checkHost(options, ip):
 	with Manager() as manager:
