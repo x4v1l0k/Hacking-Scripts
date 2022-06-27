@@ -41,27 +41,19 @@ _________________________________________________________________\n""")
 
 def tcpSynPing(options, ip, ipStatus, verbose):
 	ans, unans = scapy.sr(scapy.IP(dst=ip) / scapy.TCP(dport=80, flags="S"), iface=options.device, timeout=options.default_timeout, verbose=verbose)
-	print(ans)
 	for a in ans: ipStatus.append(a[1].src)
-	print(ipStatus)
 
 def tcpAckPing(options, ip, ipStatus, verbose):
 	ans, unans = scapy.sr(scapy.IP(dst=ip) / scapy.TCP(dport=80, flags="A"), iface=options.device, timeout=options.default_timeout, verbose=verbose)
-	print(ans)
 	for a in ans: ipStatus.append(a[1].src)
-	print(ipStatus)
 
 def arpPing(options, ip, ipStatus, verbose):
 	ans, unans = scapy.srp(scapy.Ether(dst="ff:ff:ff:ff:ff:ff") / scapy.ARP(pdst=ip), iface=options.device, timeout=options.default_timeout, verbose=verbose)
-	print(ans)
 	for a in ans: ipStatus.append(a[1].src)
-	print(ipStatus)
 
 def icmpPing(options, ip, ipStatus, verbose):
 	ans, unans = scapy.sr(scapy.IP(dst=ip) / scapy.ICMP(), iface=options.device, timeout=options.default_timeout, verbose=verbose)
-	print(ans)
 	for a in ans: ipStatus.append(a[1].src)
-	print(ipStatus)
 
 def checkHost(options, ip):
 	with Manager() as manager:
