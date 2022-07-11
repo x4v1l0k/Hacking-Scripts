@@ -70,7 +70,7 @@ def checkResponse(ip, response, outfile):
 	if ip in status['alive']: return True
 	if type(response) == NoneType or not response: return False
 	if ip not in status['alive']:
-		outfile.write(ip)
+		if outfile: outfile.write(ip)
 		status['alive'].append(ip)
 		status['remaining'].remove(ip)
 	return True
