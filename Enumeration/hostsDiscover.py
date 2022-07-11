@@ -163,15 +163,15 @@ _________________________________________________________________\n""")
 
 def getArguments():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-i", "--ip", dest="ip", help="target ip address or a ip range like x.x.x.x/x")
-	parser.add_argument("-l", "--list", dest="list", help="file with list of target ip address (one per line)")
+	parser.add_argument("-i", "--ip", dest="ip", help="Target ip address or a ip range like x.x.x.x/x")
+	parser.add_argument("-l", "--list", dest="list", help="File with list of target ip address (one per line)")
 	parser.add_argument("-d", "--device", dest="device", help="Network interface device")
-	parser.add_argument("-t", "--timeout", dest="timeout", help="default timeout for the host recognition", type=int)
-	parser.add_argument("-p", "--ports", dest="ports", help="list of ports for testing comma separated (\"all\" for all ports). Ex: 21,22,80")
-	parser.add_argument("-tp", "--top-ports", dest="topPorts", help="list of top ports for testing (Choose from: 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000)")
-	parser.add_argument("-s", "--scan", dest="scan", help="list of scan types comma separated (all, icmp, syn, ack, synack, arp, steal, xmas, fin, null). Ex: syn,ack")
-	parser.add_argument("-o", "--output", dest="output", help="save alive ips to log file")
-	parser.add_argument("-v", "--verbose", action="store_true", help="mainly for debugging")
+	parser.add_argument("-t", "--timeout", dest="timeout", help="Default timeout for the host recognition", type=int)
+	parser.add_argument("-p", "--ports", dest="ports", help="List of ports for testing comma separated (\"all\" for all ports). Ex: 21,22,80")
+	parser.add_argument("-tp", "--top-ports", dest="topPorts", help="List of top ports for testing (Choose from: 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000)")
+	parser.add_argument("-s", "--scan", dest="scan", help="List of scan types comma separated (all, icmp, syn, ack, synack, arp, steal, xmas, fin, null). Ex: syn,ack")
+	parser.add_argument("-o", "--output", dest="output", help="Save alive ips to log file")
+	parser.add_argument("-v", "--verbose", action="store_true", help="Mainly for debugging")
 	args = parser.parse_args()
 	if not args.device:
 		args.device = netifaces.gateways()['default'][netifaces.AF_INET][1]
