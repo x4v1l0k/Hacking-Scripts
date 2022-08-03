@@ -22,3 +22,14 @@ options:
   -o OUTPUT, --output OUTPUT                    Save alive ips to log file
   -v, --verbose                                 Mainly for debugging
   ```
+
+# Chrome-Passwords
+
+```
+usage: decryptChrome.py [-h] [-d DBFILE] [-k LOCALSTATE]
+
+options:
+  -h, --help                                    show this help message and exit
+  -d DBFILE, --db DBFILE                        Path to the Chrome database file. (If not specified, the installation path will be used)
+  -k LOCALSTATE, --key LOCALSTATE               Path to the Chrome local state file. (If not specified, the installation path will be used)
+```
