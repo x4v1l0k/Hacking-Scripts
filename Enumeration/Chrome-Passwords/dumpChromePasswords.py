@@ -11,8 +11,8 @@ import shutil
 
 def get_arguments():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-d", "--db", dest="dbFile", help="Path to the Chrome database file")
-	parser.add_argument("-k", "--key", dest="localState", help="Path to the Chrome local state file")
+	parser.add_argument("-d", "--db", dest="dbFile", help="Path to the Chrome database file. (If not specified, the installation path will be used)")
+	parser.add_argument("-k", "--key", dest="localState", help="Path to the Chrome local state file. (If not specified, the installation path will be used)")
 	args = parser.parse_args()
 	return args
 
