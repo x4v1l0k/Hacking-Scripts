@@ -1,4 +1,4 @@
-# hostsDiscovery
+# hostsDiscover
 
 ```
    __             __        ___   _                              
